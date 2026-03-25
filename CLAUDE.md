@@ -19,6 +19,8 @@ This file defines how Claude should behave in this repository.
 - No unnecessary abstractions — keep experiments focused and minimal.
 - Prefer self-explanatory code over comments.
 - Do not add error handling for cases that can't happen in the current experiment scope.
+- Use array methods (`map`, `filter`, `reduce`, `forEach`) over `for`/`while` loops — except when performance is critical or `break`/`continue` is needed.
+- Use `reduce` only when the intent is clear; replace with `forEach` if it gets complex.
 
 ## Installed Skills
 
