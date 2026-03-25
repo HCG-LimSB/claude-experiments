@@ -30,6 +30,24 @@ src/
 - 상위 계층 컴포넌트는 하위 계층만 import할 수 있다 (pages → templates → organisms → molecules → atoms).
 - 같은 계층 간 import는 피한다.
 
+### 레이어 내부 폴더 구조
+
+각 레이어 내부는 UI 역할 또는 도메인에 따라 카테고리 폴더로 그룹화한다.
+
+```
+atoms/
+  form/        # Input, Checkbox, Select 등
+  feedback/    # Spinner, Toast, Badge 등
+  typography/  # Heading, Text, Label 등
+molecules/
+  auth/        # LoginForm, SignupForm 등
+  navigation/  # Breadcrumb, Tabs 등
+```
+
+- 카테고리는 고정이 아닌 참고용이며, 상황에 따라 자유롭게 추가한다.
+- 기존 카테고리에 맞지 않는 컴포넌트는 새 카테고리 폴더를 생성한다.
+- 카테고리 폴더 내에 추가 depth는 만들지 않는다.
+
 ## 프로젝트 구조
 
 ```
@@ -109,3 +127,52 @@ import { Button, Input } from "@/components/atoms";
 // Bad
 import Button from "@/components/atoms/Button";
 ```
+
+## 코드 스타일
+
+- 배열 순회는 `for`/`while` 대신 `map`, `filter`, `reduce`, `forEach` 등 배열 메서드를 사용한다.
+- 단, 성능이 critical하거나 `break`/`continue`가 필요한 경우는 예외로 한다.
+- `reduce`는 가독성이 명확할 때만 사용하고, 복잡해지면 `forEach`로 대체한다.
+- 조기 반환(early return)을 적극 활용해 중첩을 줄인다.
+- 삼항 연산자는 단순한 경우에만 — 중첩 삼항 금지.
+
+## 상태 관리
+
+- 서버 상태와 클라이언트 상태를 분리한다.
+  - 서버 상태: React Query / SWR 등 사용.
+  - 클라이언트 전역 상태: `stores/` 사용.
+- `useState`는 컴포넌트 로컬 UI 상태에만 사용한다.
+
+## 에러 처리
+
+- API 호출 시 반드시 에러 처리를 포함한다.
+- Error Boundary를 적절한 단위로 설정한다.
+
+## 성능
+
+- `useEffect` 의존성 배열을 정확히 명시한다 — 빈 배열 남용 금지.
+- `useCallback`, `useMemo`는 실제 성능 문제가 있을 때만 사용한다 — 남용 금지.
+
+## 접근성
+
+- 이미지에는 반드시 `alt` 속성을 명시한다.
+- 버튼/링크에는 의미있는 텍스트 또는 `aria-label`을 제공한다.
+- 키보드 접근이 가능하도록 `tabIndex`, `onKeyDown` 등을 고려한다.
+
+## 테스트
+
+- 컴포넌트 테스트는 구현이 아닌 동작 기준으로 작성한다.
+- 비즈니스 로직(hooks, utils)은 단위 테스트를 작성한다.
+- 테스트 파일은 대상 파일과 같은 위치에 `*.test.ts(x)` 로 둔다.
+
+## 환경변수
+
+- 환경변수는 반드시 `configs/`에서 중앙 관리한다.
+- 컴포넌트나 서비스에서 `process.env`를 직접 참조하지 않는다.
+- 환경변수 키는 `NEXT_PUBLIC_` prefix 규칙을 준수한다.
+
+## 주석
+
+- "무엇"이 아닌 "왜"를 설명하는 주석만 작성한다.
+- 당연한 코드에 주석 금지 — 코드 자체가 읽히도록 작성한다.
+- TODO 주석은 반드시 이슈 번호를 함께 명시한다 (`// TODO: #123`).
