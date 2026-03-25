@@ -40,3 +40,5 @@ The following agent skills are available in `.agents/skills/`:
 - Branch: `main`
 
 See [.claude/rules/deploy.md](.claude/rules/deploy.md) for commit and deploy preparation rules.
+
+See [.claude/rules/frontend.md](.claude/rules/frontend.md) for frontend design pattern rules (Atomic Design).
